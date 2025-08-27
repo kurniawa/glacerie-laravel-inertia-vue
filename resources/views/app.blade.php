@@ -22,7 +22,23 @@
         @vite(['resources/js/app.ts', "resources/js/pages/{$page['component']}.vue"])
         @inertiaHead
     </head>
-    <body class="font-sans antialiased relative">
+    <body class="font-sans antialiased relative bg-rose-50"
+    {{-- style="
+       background-image: 
+         linear-gradient(135deg, rgba(255,255,255,0.15) 25%, transparent 25%),
+         linear-gradient(225deg, rgba(255,255,255,0.15) 25%, transparent 25%),
+         linear-gradient(45deg, rgba(255,255,255,0.15) 25%, transparent 25%),
+         linear-gradient(315deg, rgba(255,255,255,0.15) 25%, transparent 25%);
+       background-size: 20px 20px;
+       background-color: rgb(255 228 230);
+     " --}}
+     {{-- style="background-image: repeating-radial-gradient(circle at 20% 20%, white 0px, white 2px, transparent 3px, transparent 40px);" --}}
+     {{-- style="background-image: url('data:image/svg+xml;utf8,
+     <svg xmlns=&#39;http://www.w3.org/2000/svg&#39; width=&#39;40&#39; height=&#39;40&#39; fill=&#39;white&#39; opacity=&#39;0.2&#39;>
+       <circle cx=&#39;10&#39; cy=&#39;10&#39; r=&#39;3&#39;/>
+       <circle cx=&#39;30&#39; cy=&#39;30&#39; r=&#39;3&#39;/>
+     </svg>');" --}}
+     >
         @inertia
     </body>
 </html>
