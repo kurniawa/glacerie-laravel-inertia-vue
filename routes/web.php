@@ -7,7 +7,8 @@ Route::get('/', function () {
     return Inertia::render('Home');
 })->name('home');
 
-Route::get('/price-list', function () {return Inertia::render('PriceList');})->name('price-list');
+Route::get('/gelato-pricelist', function () {return Inertia::render('GelatoPricelist');})->name('gelato-pricelist');
+Route::get('/pastry-pricelist', function () {return Inertia::render('PastryPricelist');})->name('pastry-pricelist');
 
 Route::get('dashboard', function () {
     return Inertia::render('Dashboard');

@@ -338,7 +338,7 @@
   font-style: italic;
 }
 
-/* Font Sevillana */
+/* Font Sevillana; tipe: huruf sambung unik*/
 .sevillana-regular {
   font-family: "Sevillana", cursive;
   font-weight: 400;
@@ -355,7 +355,7 @@
   font-style: italic;
 }
 
-/* Fontstyle: Jua */
+/* Fontstyle: Jua; tipe: rounded dan imut*/
 .jua-300 {
   font-family: "Jua", sans-serif;
   font-weight: 300;

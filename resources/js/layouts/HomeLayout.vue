@@ -59,8 +59,9 @@ onBeforeUnmount(() => {
         :class="{'hidden': !showSidebar}" @click="showSidebar = false"></div>
     <nav class="grid grid-cols-1 items-center fixed inset-y-0 left-0 w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out z-50"
         :class="showSidebar ? 'translate-x-0' : '-translate-x-full'">
-        <ul class="text-gray-400 font-bold text-sm">
-            <li class="py-3 px-2 border-y"><Link :href="route('price-list')" class="hover:bg-slate-100 active:bg-slate-100"><span class="">Price List</span></Link></li>
+        <ul class="text-gray-500 barlow-condensed-300 text-sm">
+            <li class="py-3 px-2 border-t"><Link :href="route('gelato-pricelist')" class="hover:bg-slate-100 active:bg-slate-100"><span class="">Gelato Pricelist</span></Link></li>
+            <li class="py-3 px-2 border-y"><Link :href="route('pastry-pricelist')" class="hover:bg-slate-100 active:bg-slate-100"><span class="">Pastry Pricelist</span></Link></li>
         </ul>
     </nav>
     <main class="w-screen p-2 overflow-hidden">
