@@ -7,6 +7,11 @@ import pastryQuicheSalmon from '/resources/images/site/pastry-quiche-salmon-2.jp
 import pastryMadeleine from '/resources/images/site/pastry-madeleine-1.jpg'
 import pastrySoes from '/resources/images/site/pastry-soes-1.jpg'
 import pastryCookiesChocoChip from '/resources/images/site/pastry-cookies-choco-chip-1.jpg'
+import pastryBoluJadul from '/resources/images/site/pastry-bolu-jadul-mixed-1.jpg'
+import pastryFudgyBrownieBites from '/resources/images/site/pastry-fudgy-brownie-bites.jpg'
+import pastryPremiumMarbleCake from '/resources/images/site/pastry-premium-marble-cake-2.jpg'
+import pastryNutellaPuff from '/resources/images/site/pastry-nutella-puff.jpg'
+import iconChefHat from '/resources/images/icons/icon-chef-hat.png'
 
 </script>
 
@@ -40,11 +45,12 @@ import pastryCookiesChocoChip from '/resources/images/site/pastry-cookies-choco-
                     <div class="flex gap-2">
                         <h2 class="jua-400 text-rose-300 text-xl">Lapis Legit Half</h2>
                         <span class="barlow-condensed-300 text-rose-300">(10x20 cm)</span>
+                        <!-- <img :src="iconChefHat" alt="" class="size-6"> -->
                     </div>
                     <table class="w-full barlow-condensed-300 text-gray-600">
                         <tbody>
-                            <tr><td>Original</td><td class="text-right">125 K</td></tr>
-                            <tr><td>Prunes</td><td class="text-right">145 K</td></tr>
+                            <tr><td>Original</td><td class="text-right">360 K</td></tr>
+                            <tr><td>Prunes</td><td class="text-right">395 K</td></tr>
                         </tbody>
                     </table>
                     <div class="absolute top-2/3 left-3/4 -translate-x-1/2 -translate-y-1/2 size-16 -z-10 rounded-full overflow-hidden">
@@ -85,6 +91,18 @@ import pastryCookiesChocoChip from '/resources/images/site/pastry-cookies-choco-
                 <div class="relative">
                     <div class="flex justify-between">
                         <div class="flex gap-2">
+                            <h2 class="jua-400 text-rose-300 text-xl">Fudgy Brownie Bites</h2>
+                            <span class="barlow-condensed-300 text-rose-300">(10 pcs)</span>
+                        </div>
+                        <span class="barlow-condensed-300 text-gray-600">60 K</span>
+                    </div>
+                    <div class="absolute top-2/3 left-3/4 -translate-x-1/2 -translate-y-1/2 size-16 -z-10 rounded-full overflow-hidden shadow drop-shadow">
+                        <img :src="pastryFudgyBrownieBites" alt="" class="w-full h-full object-cover">
+                    </div>
+                </div>
+                <div class="relative">
+                    <div class="flex justify-between">
+                        <div class="flex gap-2">
                             <h2 class="jua-400 text-rose-300 text-xl">Madeleines</h2>
                             <span class="barlow-condensed-300 text-rose-300">(10 pcs)</span>
                         </div>
@@ -118,31 +136,23 @@ import pastryCookiesChocoChip from '/resources/images/site/pastry-cookies-choco-
                         <img :src="pastryCookiesChocoChip" alt="" class="w-full h-full object-cover">
                     </div>
                 </div>
-                <div>
+                <div class="relative">
                     <div class="flex gap-2">
                         <h2 class="jua-400 text-rose-300 text-xl">Premium Bolu Jadul</h2>
                         <span class="barlow-condensed-300 text-rose-300">(10x20 cm)</span>
                     </div>
+                    <div><span class="barlow-condensed-300 text-rose-300 text-xs">Topping: Cheese/Ceres/Mixed</span></div>
                     <table class="w-full barlow-condensed-300 text-gray-600">
                         <tbody>
                             <tr><td>Original</td><td class="text-right">145 K</td></tr>
                             <tr><td>Pandan</td><td class="text-right">160 K</td></tr>
                         </tbody>
                     </table>
-                </div>
-                <div>
-                    <div class="flex gap-2">
-                        <h2 class="jua-400 text-rose-300 text-xl">Raspberry Choco Almond Brownies</h2>
-                        <span class="barlow-condensed-300 text-rose-300">(10x20 cm)</span>
+                    <div class="absolute top-2/3 left-3/4 -translate-x-1/2 -translate-y-1/2 size-16 -z-10 rounded-full overflow-hidden shadow drop-shadow">
+                        <img :src="pastryBoluJadul" alt="" class="w-full h-full object-cover">
                     </div>
-                    <table class="w-full barlow-condensed-300 text-gray-600">
-                        <tbody>
-                            <tr><td>Original</td><td class="text-right">145 K</td></tr>
-                            <tr><td>Pandan</td><td class="text-right">160 K</td></tr>
-                        </tbody>
-                    </table>
                 </div>
-                <div>
+                <div class="relative">
                     <div class="flex gap-2">
                         <h2 class="jua-400 text-rose-300 text-xl">Premium Marble Cake</h2>
                         <span class="barlow-condensed-300 text-rose-300">(10x20 cm)</span>
@@ -153,14 +163,23 @@ import pastryCookiesChocoChip from '/resources/images/site/pastry-cookies-choco-
                             <tr><td>Pandan</td><td class="text-right">160 K</td></tr>
                         </tbody>
                     </table>
+                    <div class="absolute top-2/3 left-3/4 -translate-x-1/2 -translate-y-1/2 size-16 -z-10 rounded-full overflow-hidden shadow drop-shadow">
+                        <img :src="pastryPremiumMarbleCake" alt="" class="w-full h-full object-cover">
+                    </div>
                 </div>
-                <div>
+                <div class="relative">
                     <div class="flex justify-between">
-                        <div class="flex gap-2">
-                            <h2 class="jua-400 text-rose-300 text-xl">Nutella / Biscoff Puff</h2>
+                        <div class="flex gap-2 items-end">
+                            <div class="jua-400 text-rose-300 text-xl">
+                                <h2>Nutella / Biscoff /</h2>
+                                <h2>Choco Cheese Puff</h2>
+                            </div>
                             <span class="barlow-condensed-300 text-rose-300">(9 pcs)</span>
                         </div>
                         <span class="barlow-condensed-300 text-gray-600">90 K</span>
+                    </div>
+                    <div class="absolute top-2/3 left-3/4 -translate-x-1/2 -translate-y-1/2 size-16 -z-10 rounded-full overflow-hidden shadow drop-shadow">
+                        <img :src="pastryNutellaPuff" alt="" class="w-full h-full object-cover">
                     </div>
                 </div>
                 <div>
@@ -182,6 +201,9 @@ import pastryCookiesChocoChip from '/resources/images/site/pastry-cookies-choco-
             </div>
         </div>
     </HomeLayout>
+    <!-- Ini atribusi icon dari flaticon: Chef hat icons
+        <a href="https://www.flaticon.com/free-icons/chef-hat" title="chef hat icons">Chef hat icons created by vectorsmarket15 - Flaticon</a>
+     -->
 </template>
 
 
