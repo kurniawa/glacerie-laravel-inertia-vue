@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProductionController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -9,6 +10,10 @@ Route::get('/', function () {
 
 Route::get('/gelato-pricelist', function () {return Inertia::render('GelatoPricelist');})->name('gelato-pricelist');
 Route::get('/pastry-pricelist', function () {return Inertia::render('PastryPricelist');})->name('pastry-pricelist');
+
+Route::post('/production/update-multiple', [ProductionController::class, 'updateMultiple']);
+Route::resource('/production', ProductionController::class);
+
 
 Route::get('dashboard', function () {
     return Inertia::render('Dashboard');
