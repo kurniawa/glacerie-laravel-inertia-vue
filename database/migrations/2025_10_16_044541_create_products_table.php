@@ -13,26 +13,20 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->unsignedTinyInteger('category_id')->nullable();
+            $table->unsignedSmallInteger('category_id')->nullable();
 
             $table->foreign('category_id')
                 ->references('id')
-                ->on('product_categories')
+                ->on('categories')
                 ->onDelete('set null');
 
             $table->string('category_slug', 50);
-            $table->foreignId('parent_id')->nullable()->constrained('products')->onDelete('set null');
-            $table->string('parent', 50)->nullable();
-            $table->string('shortname', 100)->nullable();
+            // $table->foreignId('parent_id')->nullable()->constrained('products')->onDelete('set null');
+            // $table->string('parent', 50)->nullable();
+            $table->string('shortname', 50)->nullable();
             $table->string('name');
+            $table->string('parentheses')->nullable();
             $table->string('slug')->unique();
-            $table->decimal('weight', 7, 2)->nullable(); // data ini untuk proyek toko emas online
-            $table->decimal('weight_fee', 10, 2)->nullable(); // data ini untuk proyek toko emas online
-            $table->decimal('weight_price', 15, 2)->nullable(); // data ini untuk proyek toko emas online
-            $table->decimal('price', 15, 2);
-            $table->string('unit', 20)->nullable();
-            $table->string('tray', 20)->nullable();
-            $table->string('status', 20)->default('ready'); // ['ready', 'on display', 'active', 'inactive', 'archived', 'sold', 'out of stock', 'buyback', 'sorted', 'cleaned']
             $table->text('description')->nullable();
             $table->string('barcode', 13)->nullable()->unique();
             $table->string('created_by', 20)->nullable(); // username dari auth user yang membuat

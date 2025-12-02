@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Product extends Model
+class Edition extends Model
 {
     protected $guarded = ['id'];
 }

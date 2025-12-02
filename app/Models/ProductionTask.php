@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class ProductionTask extends Model
 {
-    //
+    protected $guarded = ['id'];
 }
