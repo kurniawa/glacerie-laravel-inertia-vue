@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ProductionTask;
+use App\Models\ProductVariant;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -25,6 +26,9 @@ class ProductionController extends Controller
         // group by date untuk kenyamanan
         $grouped = $tasks->groupBy('production_date->format("Y-m-d")');
 
+        // ambil semua product variants
+        $product_variants = ProductVariant::all();
+
         return Inertia::render('Production/Board', [
             'start_date' => $start->format('Y-m-d'),
             'days' => collect(range(0,6))->map(function($i) use ($start, $grouped){
@@ -33,7 +37,8 @@ class ProductionController extends Controller
                     'date' => $date,
                     'tasks' => $grouped->get($date, []),
                 ];
-            })
+            }),
+            'product_variants' => $product_variants,
         ]);
     }
 

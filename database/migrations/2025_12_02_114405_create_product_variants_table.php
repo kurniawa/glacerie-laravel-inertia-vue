@@ -15,8 +15,11 @@ return new class extends Migration
             $table->id();
             $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
             $table->string('product_slug');
-            $table->string('name'); // e.g., 'Cup 4oz, Jar 300ml'
             $table->string('slug')->unique();
+            $table->string('name'); // e.g., 'Cup 4oz, Jar 300ml'
+            $table->string('display_name', 50)->nullable(); // biasanya lebih singkat dari name
+            $table->string('alias', 50)->nullable(); // biasanya lebih singkat dari name
+            $table->string('abbreviated_name', 10)->nullable();
             $table->string('size')->nullable(); // string because some sizes may include length x width
             $table->string('unit', 10)->nullable(); // e.g., 'oz', 'ml', 'g', 'pcs'
             $table->decimal('base_price', 15, 2);

@@ -23,10 +23,12 @@ return new class extends Migration
             $table->string('category_slug', 50);
             // $table->foreignId('parent_id')->nullable()->constrained('products')->onDelete('set null');
             // $table->string('parent', 50)->nullable();
-            $table->string('shortname', 50)->nullable();
+            $table->string('slug')->unique();
             $table->string('name');
             $table->string('parentheses')->nullable();
-            $table->string('slug')->unique();
+            $table->string('display_name', 50)->nullable(); // biasanya lebih singkat dari name
+            $table->string('alias', 50)->nullable(); // biasanya lebih singkat dari name
+            $table->string('abbreviated_name', 10)->nullable();
             $table->text('description')->nullable();
             $table->string('barcode', 13)->nullable()->unique();
             $table->string('created_by', 20)->nullable(); // username dari auth user yang membuat
