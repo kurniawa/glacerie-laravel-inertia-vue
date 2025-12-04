@@ -12,6 +12,15 @@ const props = defineProps({
 
 const emit = defineEmits(["hide-variants"]);
 
+function cloneVariant(original) {
+  return {
+    ...original,
+    id: Date.now() + Math.random(), // supaya unique
+    product: original.display_name,
+    customer: 'Guest'
+  }
+}
+
 </script>
 
 <template>
@@ -27,8 +36,9 @@ const emit = defineEmits(["hide-variants"]);
             :list="product_variants"
             item-key="id"
             :group="{ name: 'tasks', pull: 'clone', put: false }"
+            :clone="cloneVariant"
             sort="false"
-            >
+        >
             <template #item="{ element }">
                 <div
                 class="p-2 mb-1 border rounded bg-white hover:bg-gray-50 cursor-move"

@@ -18,26 +18,47 @@ class ProductionController extends Controller
         $end = today()->addDays(6);
 
         // ambil semua task dalam range 7 hari
+        $dates = collect();
+        for ($date = $start->copy(); $date->lte($end); $date->addDay()) {
+            $dates->push($date->format('Y-m-d'));
+        }
+
         $tasks = ProductionTask::whereBetween('production_date', [$start, $end])
             ->orderBy('production_date')
+            ->orderBy('customer')
             ->orderBy('position')
             ->get();
 
+            // dd($tasks);
         // group by date untuk kenyamanan
-        $grouped = $tasks->groupBy('production_date->format("Y-m-d")');
+        $grouped = $tasks
+        ->groupBy(fn($t) => $t->production_date->format('Y-m-d'))
+        ->map(function ($tasksByDate) {
+            return $tasksByDate
+                ->groupBy(fn($t) => $t->customer ?? 'Guest')
+                ->map(fn($tasksByCustomer) => $tasksByCustomer->sortBy('position')->values());
+        });
+
+        $columns = $dates->map(function ($date) use ($grouped) {
+            return [
+                'date' => $date,
+                'customers' => $grouped[$date] ?? []
+            ];
+        });
 
         // ambil semua product variants
         $product_variants = ProductVariant::all();
 
         return Inertia::render('Production/Board', [
             'start_date' => $start->format('Y-m-d'),
-            'days' => collect(range(0,6))->map(function($i) use ($start, $grouped){
-                $date = $start->copy()->addDays($i)->format('Y-m-d');
-                return [
-                    'date' => $date,
-                    'tasks' => $grouped->get($date, []),
-                ];
-            }),
+            // 'days' => collect(range(0,6))->map(function($i) use ($start, $grouped){
+            //     $date = $start->copy()->addDays($i)->format('Y-m-d');
+            //     return [
+            //         'date' => $date,
+            //         'tasks' => $grouped->get($date, []),
+            //     ];
+            // }),
+            'columns' => $columns,
             'product_variants' => $product_variants,
         ]);
     }

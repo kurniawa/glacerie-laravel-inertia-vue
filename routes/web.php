@@ -12,6 +12,7 @@ Route::get('/gelato-pricelist', function () {return Inertia::render('GelatoPrice
 Route::get('/pastry-pricelist', function () {return Inertia::render('PastryPricelist');})->name('pastry-pricelist');
 
 Route::post('/production/update-multiple', [ProductionController::class, 'updateMultiple']);
+Route::post('/production/preparing-daily-columns', [ProductionController::class, 'preparingDailyColumns']);
 Route::resource('/production', ProductionController::class);
 
 

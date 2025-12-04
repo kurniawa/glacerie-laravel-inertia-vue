@@ -1,18 +1,18 @@
 <script setup>
 import draggable from 'vuedraggable'
 import { router } from '@inertiajs/vue3'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import HomeLayout from '@/layouts/HomeLayout.vue'
 import AddProduct from './AddProduct.vue'
 import Button from '@/components/ui/button/Button.vue'
 
 const props = defineProps({
-    days: Array,       // data 7 hari dengan tasks di dalamnya
+    columns: Array,
     start_date: String,
     product_variants: Object
-})
-// make the days reactive
-const columns = ref(JSON.parse(JSON.stringify(props.days)))
+});
+
+const columns = ref(JSON.parse(JSON.stringify(props.columns)))
 
 const saveChanges = (dayIndex) => {
   const day = columns.value[dayIndex]
@@ -29,34 +29,36 @@ const saveChanges = (dayIndex) => {
       })
 }
 
-const addedToDay = (evt, dayIndex) => {
-  const variant = evt.item.__draggable_context.element;
+const addedToCustomer = (event, dayIndex, custIndex) => {
+    const movedTask = columns.value[dayIndex].customers[custIndex].tasks[event.newIndex];
+    
+    // contoh payload baru:
+    const payload = {
+        task_id: movedTask.id,
+        new_date: columns.value[dayIndex].date,
+        new_customer: columns.value[dayIndex].customers[custIndex].customer,
+        new_position: event.newIndex,
+    };
 
-  const newTask = {
-    id: variant.id, // karena belum tersimpan
-    product: `${variant.display_name}(${variant.size} ${variant.unit})`,
-    // quantity: variant.size,
-    production_date: columns.value[dayIndex].date,
-    product_variant_id: variant.id
-  };
-
-  // Replace the placeholder
-  columns.value[dayIndex].tasks.splice(evt.newIndex, 1, newTask);
+    router.post('/production/update-multiple', { data: payload });
 };
 
 const movedAcrossDays = () => {
-  // Kirim semua kolom ke backend
-  const payload = columns.value.map((day, i) => ({
-      date: day.date,
-      tasks: day.tasks.map((t, idx) => ({
-          id: t.id,
-          position: idx + 1,
-          production_date: day.date
-      }))
-  }))
+    const payload = columns.value.map(day => ({
+        date: day.date,
+        customers: day.customers.map(cust => ({
+        customer: cust.customer,
+        tasks: cust.tasks.map((t, index) => ({
+            id: t.id,
+            production_date: day.date,
+            customer: cust.customer,
+            position: index + 1
+        }))
+        }))
+    }));
 
-  router.post('/production/update-multiple', { data: payload })
-}
+    router.post('/production/update-multiple', { data: payload });
+};
 
 // Product Variants
 const productVariantsClass = ref('hidden');
@@ -82,33 +84,49 @@ function hideProductVariants() {
         <div :class="boardClass" class="text-xs">
             <AddProduct :product_variants="product_variants" :class="productVariantsClass" @hide-variants="hideProductVariants"/>
             <div>
-              <div class="text-right">
-                  <Button variant="outline" size="sm" @click="toggleProductVariants">
-                      Toggle Product Variants
-                  </Button>
-              </div>
-              <div :class="dayColumnsClass">
-                  <div v-for="(day, index) in columns" :key="day.date" class="border rounded bg-gray-50 w-full min-h-36">
-                      <div class="text-center py-1 border-b">
-                          <h3 class="font-bold">{{ day.date }}</h3>
-                      </div>
-              
-                      <draggable
-                        v-model="day.tasks"
-                        group="tasks"
-                        item-key="id"
-                        class=""
-                        @add="addedToDay($event, index)"
-                        @end="movedAcrossDays"
-                      >
-                      <template #item="{element}">
-                          <div class="p-2 bg-white border rounded shadow-sm">
-                          {{ element.product }}
-                          </div>
-                      </template>
-                      </draggable>
-                  </div>
-              </div>
+                <div class="text-right">
+                    <Button variant="outline" size="sm" @click="toggleProductVariants">
+                        Toggle Product Variants
+                    </Button>
+                </div>
+                <div :class="dayColumnsClass">
+                    <div 
+                        v-for="(day, dayIndex) in columns" 
+                        :key="day.date" 
+                        class="border rounded bg-gray-50 w-full p-1"
+                    >
+                        <!-- Header tanggal -->
+                        <div class="text-center py-1 border-b">
+                        <h3 class="font-bold">{{ day.date }}</h3>
+                        </div>
+
+                        <!-- Customer groups untuk hari ini -->
+                        <div v-for="(cust, custIndex) in day.customers" :key="cust.customer" class="mt-2">
+                        
+                        <!-- Header customer -->
+                        <div class="text-sm font-semibold px-1 mb-1">
+                            {{ cust.customer }}
+                        </div>
+
+                        <!-- Draggable per customer -->
+                        <draggable
+                            v-model="cust.tasks"
+                            group="tasks"
+                            item-key="id"
+                            class="space-y-1"
+                            @add="addedToCustomer($event, dayIndex, custIndex)"
+                            @end="movedAcrossDays"
+                        >
+                            <template #item="{element}">
+                            <div class="p-2 bg-white border rounded shadow-sm">
+                                {{ element.product }}
+                            </div>
+                            </template>
+                        </draggable>
+
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </HomeLayout>

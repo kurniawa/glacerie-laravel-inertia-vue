@@ -20,7 +20,7 @@ return new class extends Migration
                 ->on('categories')
                 ->onDelete('set null');
 
-            $table->string('table', 50);
+            $table->string('table_name', 50);
             $table->string('name', 50);
             $table->string('localname', 50);
             $table->string('slug', 50)->unique();

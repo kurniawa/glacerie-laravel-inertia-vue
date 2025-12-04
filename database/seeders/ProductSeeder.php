@@ -16,15 +16,15 @@ class ProductSeeder extends Seeder
     public function run(): void
     {
         $categories = [
-            ['parent_id' => null, 'table' => 'products', 'name' => 'Gelato', 'localname' => 'Gelato', 'slug' => 'gelato', 'description' => 'Italian style ice cream made with natural ingredients.'],
-            ['parent_id' => 1, 'table' => 'products', 'name' => 'Gelato Regular Flavour', 'localname' => 'Gelato Regular Flavour', 'slug' => 'gelato-regular-flavour', 'description' => null],
-            ['parent_id' => 1, 'table' => 'products', 'name' => 'Gelato Premium Flavour', 'localname' => 'Gelato Premium Flavour', 'slug' => 'gelato-premium-flavour', 'description' => null],
-            ['parent_id' => 1, 'table' => 'products', 'name' => 'Gelato Regular Flavour Vegan', 'localname' => 'Gelato Regular Flavour Vegan', 'slug' => 'gelato-regular-flavour-vegan', 'description' => null],
-            ['parent_id' => 1, 'table' => 'products', 'name' => 'Gelato Regular Flavour Seasonal', 'localname' => 'Gelato Regular Flavour Seasonal', 'slug' => 'gelato-regular-flavour-seasonal', 'description' => null],
-            ['parent_id' => 1, 'table' => 'products', 'name' => 'Gelato Premium Flavour Vegan', 'localname' => 'Gelato Premium Flavour Vegan', 'slug' => 'gelato-premium-flavour-vegan', 'description' => null],
-            ['parent_id' => 1, 'table' => 'products', 'name' => 'Gelato Premium Flavour Seasonal', 'localname' => 'Gelato Premium Flavour Seasonal', 'slug' => 'gelato-premium-flavour-seasonal', 'description' => null],
-            ['parent_id' => 1, 'table' => 'products', 'name' => 'Gelato Premium Flavour Vegan Seasonal', 'localname' => 'Gelato Premium Flavour Vegan Seasonal', 'slug' => 'gelato-premium-flavour-vegan-seasonal', 'description' => null],
-            ['parent_id' => null, 'table' => 'products', 'name' => 'Pastry', 'localname' => 'Kue', 'slug' => 'pastry', 'description' => 'Various kinds of pastries and baked goods.'],
+            ['parent_id' => null, 'table_name' => 'products', 'name' => 'Gelato', 'localname' => 'Gelato', 'slug' => 'gelato', 'description' => 'Italian style ice cream made with natural ingredients.'],
+            ['parent_id' => 1, 'table_name' => 'products', 'name' => 'Gelato Regular Flavour', 'localname' => 'Gelato Regular Flavour', 'slug' => 'gelato-regular-flavour', 'description' => null],
+            ['parent_id' => 1, 'table_name' => 'products', 'name' => 'Gelato Premium Flavour', 'localname' => 'Gelato Premium Flavour', 'slug' => 'gelato-premium-flavour', 'description' => null],
+            ['parent_id' => 1, 'table_name' => 'products', 'name' => 'Gelato Regular Flavour Vegan', 'localname' => 'Gelato Regular Flavour Vegan', 'slug' => 'gelato-regular-flavour-vegan', 'description' => null],
+            ['parent_id' => 1, 'table_name' => 'products', 'name' => 'Gelato Regular Flavour Seasonal', 'localname' => 'Gelato Regular Flavour Seasonal', 'slug' => 'gelato-regular-flavour-seasonal', 'description' => null],
+            ['parent_id' => 1, 'table_name' => 'products', 'name' => 'Gelato Premium Flavour Vegan', 'localname' => 'Gelato Premium Flavour Vegan', 'slug' => 'gelato-premium-flavour-vegan', 'description' => null],
+            ['parent_id' => 1, 'table_name' => 'products', 'name' => 'Gelato Premium Flavour Seasonal', 'localname' => 'Gelato Premium Flavour Seasonal', 'slug' => 'gelato-premium-flavour-seasonal', 'description' => null],
+            ['parent_id' => 1, 'table_name' => 'products', 'name' => 'Gelato Premium Flavour Vegan Seasonal', 'localname' => 'Gelato Premium Flavour Vegan Seasonal', 'slug' => 'gelato-premium-flavour-vegan-seasonal', 'description' => null],
+            ['parent_id' => null, 'table_name' => 'products', 'name' => 'Pastry', 'localname' => 'Kue', 'slug' => 'pastry', 'description' => 'Various kinds of pastries and baked goods.'],
         ];
         $products = [
             // GELATO
