@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import HomeLayout from '@/layouts/HomeLayout.vue';
+import MainLayout from '@/layouts/MainLayout.vue';
 // import titleGelatoPricelist from '~/images/site/gelato-pricelist.png'
 import gelatoGiandujaRounded from '/resources/images/site/gelato-gianduja-rounded.png' // gambar hanya bisa diakses dari folder resources
 import gelatoMintStraciatellaRounded from '/resources/images/site/gelato-mint_straciatella-rounded.png' // gambar hanya bisa diakses dari folder resources
@@ -19,7 +19,7 @@ import gelatoPeachSorbetRounded from '/resources/images/site/gelato-peach_sorbet
 </script>
 
 <template>
-    <HomeLayout>
+    <MainLayout>
         <!-- <div class="px-4 pt-2">
             <img :src="titleGelatoPricelist" alt="gelato-pricelist" class="mx-auto xl:w-3/4">
         </div> -->
@@ -288,7 +288,7 @@ import gelatoPeachSorbetRounded from '/resources/images/site/gelato-peach_sorbet
             </div>
             <!-- END: PREMIUM FLAVOR -->
         </div>
-    </HomeLayout>
+    </MainLayout>
 </template>
 
 

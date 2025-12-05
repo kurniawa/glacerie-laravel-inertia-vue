@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import HomeLayout from '@/layouts/HomeLayout.vue';
+import MainLayout from '@/layouts/MainLayout.vue';
 import pastryLapisHalfPrune from '/resources/images/site/pastry-lapis-half-prune-1.jpg' // gambar hanya bisa diakses dari folder resources
 import pastryLapisWholePrune from '/resources/images/site/pastry-lapis-whole-prune-1.jpg'
 import pastryLapisBitesOri from '/resources/images/site/pastry-lapis-bites-ori.jpg'
@@ -16,7 +16,7 @@ import iconChefHat from '/resources/images/icons/icon-chef-hat.png'
 </script>
 
 <template>
-    <HomeLayout>
+    <MainLayout>
         <!-- <div class="px-4 pt-2">
             <img :src="titleGelatoPricelist" alt="gelato-pricelist" class="mx-auto xl:w-3/4">
         </div> -->
@@ -200,7 +200,7 @@ import iconChefHat from '/resources/images/icons/icon-chef-hat.png'
                 </div>
             </div>
         </div>
-    </HomeLayout>
+    </MainLayout>
     <!-- Ini atribusi icon dari flaticon: Chef hat icons
         <a href="https://www.flaticon.com/free-icons/chef-hat" title="chef hat icons">Chef hat icons created by vectorsmarket15 - Flaticon</a>
      -->
