@@ -12,6 +12,9 @@ Route::get('/gelato-pricelist', function () {return Inertia::render('GelatoPrice
 Route::get('/pastry-pricelist', function () {return Inertia::render('PastryPricelist');})->name('pastry-pricelist');
 
 Route::post('/production/update-multiple', [ProductionController::class, 'updateMultiple']);
+Route::controller(ProductionController::class)->group(function(){
+    Route::post('/production/add-production-date', 'addProductionDate')->name('addProductionDate');
+});
 Route::resource('/production', ProductionController::class);
 
 

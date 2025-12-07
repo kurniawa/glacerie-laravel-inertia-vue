@@ -95,4 +95,17 @@ class ProductionController extends Controller
     {
         //
     }
+
+    /**
+     * 
+     */
+    public function addProductionDate(Request $request) {
+        $post = $request->post();
+        // dd($post);
+
+        return response()->json([
+            'message' => 'Date saved successfully',
+            'data' => $post
+        ]);
+    }
 }
