@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('production_tasks', function (Blueprint $table) {
             $table->id();
-            $table->string('product');       // nama pastry
+            $table->string('product')->nullable();       // nama pastry
             $table->string('customer')->nullable();
-            $table->integer('quantity');     // jumlah / unit
+            $table->integer('quantity')->nullable();     // jumlah / unit
             $table->date('production_date'); // tanggal pembuatan
-            $table->integer('position')->default(0); // urutan dalam hari tsb
+            $table->tinyInteger('position')->default(0); // urutan dalam hari tsb
             $table->timestamps();
         });
     }

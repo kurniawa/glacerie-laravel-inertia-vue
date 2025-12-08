@@ -3,9 +3,21 @@ import DatePicker from '@/components/DatePicker.vue';
 import Button from '@/components/ui/button/Button.vue';
 import { today } from '@internationalized/date';
 import axios from 'axios';
+import { router } from '@inertiajs/vue3'
 import { LoaderCircle } from 'lucide-vue-next';
 import { ref } from 'vue';
 
+/**
+ * hide DialogNewDate
+ */
+const emit = defineEmits(['hide-dialog-new-date']);
+function handleHideDialogNewDate() {
+    emit('hide-dialog-new-date');
+}
+
+/**
+ * Metode untuk memilih tanggal dan create new Production Date
+ */
 const selectedDate = ref(today("asia/jakarta"));
 const processing = ref(false);
 function handleAddProductionDate() {
@@ -15,24 +27,28 @@ function handleAddProductionDate() {
         `${selectedDate.value.year}-${String(selectedDate.value.month).padStart(2, '0')}-${String(selectedDate.value.day).padStart(2, '0')}`;
     console.log(formattedDate)
     // Kirim ke backend
-    axios.post('/production/add-production-date', {
+    // axios.post('/production/add-production-date', {
+    //     production_date: formattedDate,
+    // })
+    // .then(res => {
+    //     console.log("Success:", res.data);
+    //     // Bisa emit, atau close modal, dll...
+    // })
+    // .catch(err => {
+    //     console.error("Error:", err);
+    // });
+    router.post('/production/add-production-date', {
         production_date: formattedDate,
     })
-    .then(res => {
-        console.log("Success:", res.data);
-        // Bisa emit, atau close modal, dll...
-    })
-    .catch(err => {
-        console.error("Error:", err);
-    });
-
-    processing.value = false;
+    setTimeout(() => {
+        processing.value = false;
+    }, 1000);
 }
 
 </script>
 
 <template>
-    <div class="absolute left-0 top-0 right-0 bottom-0 bg-gray-200 opacity-50 z-10"></div>
+    <div class="absolute left-0 top-0 right-0 bottom-0 bg-gray-200 opacity-50 z-10" @click="handleHideDialogNewDate"></div>
     <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-11/12 z-20 bg-white rounded shadow drop-shadow p-4 w-5/6">
         <DatePicker label="Pick a date/day" v-model="selectedDate"/>
         <div class="mt-5 text-center">

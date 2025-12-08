@@ -101,11 +101,20 @@ class ProductionController extends Controller
      */
     public function addProductionDate(Request $request) {
         $post = $request->post();
-        // dd($post);
+        // Validasi input
+        // $validated = $request->validate([
+        //     'production_date' => ['required', 'date'],
+        // ]);
 
-        return response()->json([
-            'message' => 'Date saved successfully',
-            'data' => $post
-        ]);
+        // Jika validasi lolos, lanjut proses
+        // Misal simpan ke database
+        // ProductionDate::create($validated);
+
+        // return response()->json([
+        //     'message' => 'Production date added successfully.',
+        //     'data' => $post,
+        // ]);
+
+        return redirect()->back()->with('success', 'Production date added successfully.2');
     }
 }

@@ -1,15 +1,16 @@
-<script setup lang="ts">
+<script setup>
 import iconGlacerie from '~/images/icons/icon-glacerie-blue.png'
 import logoShopee from '~/images/icons/logo-shopee.png'
 import logoTikTok from '~/images/icons/logo-tiktok.png'
 import logoGoFood from '~/images/icons/logo-gofood.png'
-import { Link, router } from '@inertiajs/vue3'
-import { onBeforeUnmount, onMounted, ref } from 'vue'
+import { Link, router, usePage } from '@inertiajs/vue3'
+import { onBeforeUnmount, onMounted, onUpdated, ref } from 'vue'
+import { CircleX } from 'lucide-vue-next'
 
 const loading = ref(false)
 const showSidebar = ref(false)
-let removeStartListener:any = null
-let removeFinishListener:any = null
+let removeStartListener = null
+let removeFinishListener = null
 
 onMounted(() => {
   removeStartListener = router.on('start', () => {
@@ -24,6 +25,11 @@ onBeforeUnmount(() => {
   if (removeStartListener) removeStartListener()
   if (removeFinishListener) removeFinishListener()
 })
+
+/**
+ * Flash Messages
+ */
+const page = usePage();
 </script>
 
 <template>
@@ -68,6 +74,15 @@ onBeforeUnmount(() => {
         <main class="w-screen flex-1 p-2 overflow-hidden text-xs">
             <slot />
         </main>
+        <!-- Flash message -->
+        <div class="fixed w-3/4 bottom-24 left-4 text-xs grid grid-cols-1 gap-1 opacity-75">
+            <div class="flex gap-1 items-center">
+                <div v-if="page.props.flash?.success" class="p-3 bg-green-200 text-green-900 rounded max-w-full">
+                    {{ page.props.flash.success }}
+                </div>
+                <!-- <component :is="CircleX" class="size-5 text-red-400 hover:cursor-pointer" @click="closeFlashSuccess"/> -->
+            </div>
+        </div>
         <footer class="text-xs">
             <div class="bg-rose-100 flex justify-evenly items-center p-2 jua-300">
                 <a href="https://www.instagram.com/glacerie.id/" target="_blank" class="flex gap-1 items-center bg-rose-200 shadow drop-shadow rounded pr-2 py-1">
