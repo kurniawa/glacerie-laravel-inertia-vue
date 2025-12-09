@@ -14,30 +14,28 @@ class ProductionController extends Controller
      */
     public function index()
     {
-        $start = today();
-        $end = today()->addDays(6);
+        // $start = today();
+        // $end = today()->addDays(6);
 
         // ambil semua task dalam range 7 hari
-        $tasks = ProductionTask::whereBetween('production_date', [$start, $end])
-            ->orderBy('production_date')
-            ->orderBy('position')
-            ->get();
+        $tasks = ProductionTask::orderBy('production_date')->orderBy('customer')->orderBy('product')->get()->toArray();
 
         // group by date untuk kenyamanan
-        $grouped = $tasks->groupBy('production_date->format("Y-m-d")');
+        // $daily_tasks = $tasks->groupBy('production_date->format("Y-m-d")');
 
         // ambil semua product variants
-        $product_variants = ProductVariant::all();
+        $product_variants = ProductVariant::all()->toArray();
 
         return Inertia::render('Production/Board', [
-            'start_date' => $start->format('Y-m-d'),
-            'days' => collect(range(0,6))->map(function($i) use ($start, $grouped){
-                $date = $start->copy()->addDays($i)->format('Y-m-d');
-                return [
-                    'date' => $date,
-                    'tasks' => $grouped->get($date, []),
-                ];
-            }),
+            // 'start_date' => $start->format('Y-m-d'),
+            // 'days' => collect(range(0,6))->map(function($i) use ($start, $grouped){
+            //     $date = $start->copy()->addDays($i)->format('Y-m-d');
+            //     return [
+            //         'date' => $date,
+            //         'tasks' => $grouped->get($date, []),
+            //     ];
+            // }),
+            'tasks' => $tasks,
             'product_variants' => $product_variants,
         ]);
     }
@@ -100,11 +98,30 @@ class ProductionController extends Controller
      * 
      */
     public function addProductionDate(Request $request) {
-        $post = $request->post();
         // Validasi input
-        // $validated = $request->validate([
-        //     'production_date' => ['required', 'date'],
-        // ]);
+        $validated = $request->validate([
+            'production_date' => ['required', 'date'],
+        ]);
+
+        $isProductionDateExist = ProductionTask::where('production_date', $validated['production_date'])->first();
+        if ($isProductionDateExist) {
+            return redirect()->back()->with('error', 'Production date is already exist!');
+        }
+        /**
+         * Sebenarnya di database, tasks dengan production_date yang sama diperbolehkan.
+         * Syarat ini hanya berlaku pada fungsi ini saja,
+         * karena fungsi ini digunakan untuk membuat kolom daily_tasks pada Board.vue
+         */
+
+        ProductionTask::create([
+            'production_date' => $validated['production_date']
+        ]);
+
+        if (!$validated) {
+            dd('Validation failed!');
+        }
+        
+        // dd($validated);
 
         // Jika validasi lolos, lanjut proses
         // Misal simpan ke database
@@ -115,6 +132,6 @@ class ProductionController extends Controller
         //     'data' => $post,
         // ]);
 
-        return redirect()->back()->with('success', 'Production date added successfully.2');
+        return redirect()->route('production.index')->with('success', 'Production date added successfully');
     }
 }

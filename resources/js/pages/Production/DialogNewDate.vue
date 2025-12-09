@@ -25,7 +25,7 @@ function handleAddProductionDate() {
     // Convert date object ke format YYYY-MM-DD
     const formattedDate =
         `${selectedDate.value.year}-${String(selectedDate.value.month).padStart(2, '0')}-${String(selectedDate.value.day).padStart(2, '0')}`;
-    console.log(formattedDate)
+    // console.log(formattedDate)
     // Kirim ke backend
     // axios.post('/production/add-production-date', {
     //     production_date: formattedDate,

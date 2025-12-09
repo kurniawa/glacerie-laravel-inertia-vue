@@ -4,7 +4,7 @@ import logoShopee from '~/images/icons/logo-shopee.png'
 import logoTikTok from '~/images/icons/logo-tiktok.png'
 import logoGoFood from '~/images/icons/logo-gofood.png'
 import { Link, router, usePage } from '@inertiajs/vue3'
-import { onBeforeUnmount, onMounted, onUpdated, ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, onUpdated, ref } from 'vue'
 import { CircleX } from 'lucide-vue-next'
 
 const loading = ref(false)
@@ -30,6 +30,7 @@ onBeforeUnmount(() => {
  * Flash Messages
  */
 const page = usePage();
+const flashSuccess = computed(() => page.props.flash?.success);
 </script>
 
 <template>
@@ -77,10 +78,15 @@ const page = usePage();
         <!-- Flash message -->
         <div class="fixed w-3/4 bottom-24 left-4 text-xs grid grid-cols-1 gap-1 opacity-75">
             <div class="flex gap-1 items-center">
-                <div v-if="page.props.flash?.success" class="p-3 bg-green-200 text-green-900 rounded max-w-full">
-                    {{ page.props.flash.success }}
+                <div v-if="flashSuccess" class="p-3 bg-green-200 text-green-900 rounded max-w-full">
+                    {{ flashSuccess }}
                 </div>
                 <!-- <component :is="CircleX" class="size-5 text-red-400 hover:cursor-pointer" @click="closeFlashSuccess"/> -->
+            </div>
+            <div class="flex gap-1 items-center">
+                <div v-if="page.props.flash?.error" class="p-3 bg-red-200 text-red-900 rounded max-w-full">
+                    {{ page.props.flash.error }}
+                </div>
             </div>
         </div>
         <footer class="text-xs">
