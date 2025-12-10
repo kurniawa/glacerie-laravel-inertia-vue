@@ -18,10 +18,48 @@ class ProductionController extends Controller
         // $end = today()->addDays(6);
 
         // ambil semua task dalam range 7 hari
-        $tasks = ProductionTask::orderBy('production_date')->orderBy('customer')->orderBy('product')->get()->toArray();
+        $tasks = ProductionTask::orderBy('production_date')->orderBy('customer')->orderBy('product')->get();
+        // --------------------------------------------------------
+        // 1. Group by production_date
+        // --------------------------------------------------------
 
-        // group by date untuk kenyamanan
-        // $daily_tasks = $tasks->groupBy('production_date->format("Y-m-d")');
+        $daily_tasks_by_date = $tasks->groupBy('production_date');
+
+
+        // --------------------------------------------------------
+        // 2. Group by CUSTOMER per production_date + total quantity
+        // --------------------------------------------------------
+
+        $daily_tasks_customer = $daily_tasks_by_date->map(function ($items) {
+
+            return $items
+                ->groupBy('customer')
+                ->map(function ($customerItems) {
+
+                    return [
+                        'total_quantity' => $customerItems->sum('quantity'),
+                        'orders'         => $customerItems->values(), // reset index
+                    ];
+                });
+        });
+
+
+        // --------------------------------------------------------
+        // 3. Group by PRODUCT per production_date + total quantity
+        // --------------------------------------------------------
+
+        $daily_tasks_product = $daily_tasks_by_date->map(function ($items) {
+
+            return $items
+                ->groupBy('product')
+                ->map(function ($productItems) {
+
+                    return [
+                        'total_quantity' => $productItems->sum('quantity'),
+                        'orders'         => $productItems->values(),
+                    ];
+                });
+        });
 
         // ambil semua product variants
         $product_variants = ProductVariant::all()->toArray();
@@ -35,7 +73,9 @@ class ProductionController extends Controller
             //         'tasks' => $grouped->get($date, []),
             //     ];
             // }),
-            'tasks' => $tasks,
+            'tasks' => $tasks,'daily_tasks_by_date'  => $daily_tasks_by_date,
+            'daily_tasks_customer' => $daily_tasks_customer,
+            'daily_tasks_product'  => $daily_tasks_product,
             'product_variants' => $product_variants,
         ]);
     }

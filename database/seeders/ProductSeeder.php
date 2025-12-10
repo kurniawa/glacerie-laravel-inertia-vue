@@ -147,5 +147,23 @@ class ProductSeeder extends Seeder
                 ProductVariantEdition::create($pve);
             }
         }
+
+        $today = date("Y-m-d");
+
+        $tomorrow_time = new \DateTime('tomorrow');
+        $tomorrow = $tomorrow_time->format("Y-m-d");
+
+        $production_tasks = [
+            ['production_date' => $today, 'customer' => 'Andi', 'product' => 'Lapis', 'quantity' => 1],
+            ['production_date' => $today, 'customer' => 'Andi', 'product' => 'Brownies', 'quantity' => 2],
+            ['production_date' => $today, 'customer' => 'Andi', 'product' => 'Quiche', 'quantity' => 2],
+            ['production_date' => $today, 'customer' => 'Albert', 'product' => 'Brownies', 'quantity' => 2],
+            ['production_date' => $today, 'customer' => 'Albert', 'product' => 'Quiche', 'quantity' => 2],
+            ['production_date' => $tomorrow, 'customer' => 'Dian', 'product' => 'Quiche', 'quantity' => 3],
+            ['production_date' => $tomorrow, 'customer' => 'Albert', 'product' => 'Quiche', 'quantity' => 2],
+            ['production_date' => $tomorrow, 'customer' => 'Albert', 'product' => 'Lapis', 'quantity' => 1],
+        ];
+
+        \DB::table('production_tasks')->insert($production_tasks);
     }
 }
