@@ -14,7 +14,9 @@ return new class extends Migration
         Schema::create('production_tasks', function (Blueprint $table) {
             $table->id();
             $table->date('production_date'); // tanggal pembuatan
+            $table->foreignId('customer_id')->nullable()->constrained('users');
             $table->string('customer')->default('Guest');
+            $table->string('product_variant_id')->nullable()->constrained();       // nama pastry
             $table->string('product')->nullable();       // nama pastry
             $table->integer('quantity')->nullable();     // jumlah / unit
             $table->tinyInteger('position')->default(0); // urutan dalam hari tsb

@@ -27,7 +27,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('parentheses')->nullable();
             $table->string('display_name', 50)->nullable(); // biasanya lebih singkat dari name
-            $table->string('alias', 50)->nullable(); // biasanya lebih singkat dari name
+            $table->string('alias', 30)->nullable(); // biasanya lebih singkat dari display_name
             $table->string('abbreviated_name', 10)->nullable();
             $table->text('description')->nullable();
             $table->string('barcode', 13)->nullable()->unique();

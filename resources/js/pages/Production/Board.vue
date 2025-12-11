@@ -8,82 +8,10 @@ import DatePicker from '@/components/DatePicker.vue';
 import { usePage } from '@inertiajs/vue3';
 
 const props = defineProps({
-    tasks: Array,
-    product_variants: Array
+    production_plans: Array
 });
 
-console.log(props.tasks); 
-
-// ------------------------------------------
-// 1. Group by production_date
-// ------------------------------------------
-
-const dailyTasksByDate = computed(() => {
-  return props.tasks.reduce((acc, item) => {
-    const date = item.production_date;
-    if (!acc[date]) acc[date] = [];
-    acc[date].push(item);
-    return acc;
-  }, {});
-});
-
-// ------------------------------------------
-// 2. Group by CUSTOMER inside each date
-//     + total_quantity
-// ------------------------------------------
-
-const dailyTasksCustomer = computed(() => {
-  return Object.fromEntries(
-    Object.entries(dailyTasksByDate.value).map(([date, items]) => {
-      const grouped = items.reduce((acc, item) => {
-        const cust = item.customer;
-
-        if (!acc[cust]) {
-          acc[cust] = {
-            total_quantity: 0,
-            orders: []
-          };
-        }
-
-        acc[cust].orders.push(item);
-        acc[cust].total_quantity += item.quantity ?? 0;
-
-        return acc;
-      }, {});
-
-      return [date, grouped];
-    })
-  );
-});
-
-// ------------------------------------------
-// 3. Group by PRODUCT inside each date
-//     + total_quantity
-// ------------------------------------------
-
-const dailyTasksProduct = computed(() => {
-  return Object.fromEntries(
-    Object.entries(dailyTasksByDate.value).map(([date, items]) => {
-      const grouped = items.reduce((acc, item) => {
-        const prod = item.product;
-
-        if (!acc[prod]) {
-          acc[prod] = {
-            total_quantity: 0,
-            orders: []
-          };
-        }
-
-        acc[prod].orders.push(item);
-        acc[prod].total_quantity += item.quantity ?? 0;
-
-        return acc;
-      }, {});
-
-      return [date, grouped];
-    })
-  );
-});
+console.log(props.production_plans); 
 
 const activeTab = ref('active');
 const activeClass = ref('bg-sky-400 text-white font-bold');
@@ -105,6 +33,9 @@ const page = usePage();
 const flashSuccess = page.props.flash?.success;
 </script>
 
+<style scoped>
+</style>
+
 <template>
     <MainLayout>
         <div class="flex justify-between">
@@ -120,23 +51,74 @@ const flashSuccess = page.props.flash?.success;
         <DialogNewDate v-if="showDialogNewDate" @hide-dialog-new-date="toggleDialogNewDate"/>
 
         <!-- contoh penggunaan -->
-        <div class="flex flex-col-1 gap-1">
-            <div v-for="(byDate, date) in dailyTasksProduct" :key="date" class="border rounded bg-white w-full shadow drop-shadow">
+        <div class="flex flex-col gap-1">
+            <div v-for="plan in production_plans" :key="plan.date" class="border rounded bg-white w-full shadow drop-shadow">
                 <div class="border-b text-center py-1">
-                    <h2>{{ date }}</h2>
+                    <h2>{{ plan.date }}</h2>
                 </div>
                 <div class="p-2">
-                    <div v-for="(product, productName) in byDate" :key="productName">
-                        <strong>{{ productName }}</strong>
-                        <span>({{ product.total_quantity }})</span>
-            
-                        <!-- product.orders berisi daftar customer yang pesan -->
-                        <ul>
-                            <li v-for="order in product.orders" :key="order.id">
-                            {{ order.customer }} - qty {{ order.quantity }}
-                            </li>
-                        </ul>
-                    </div>
+                    <table class="border-collapse">
+                      <tbody>
+                        <!-- <template v-for="(productPlan, index) in plan.product_summary" :key="index">
+                          <tr class="border-b odd:bg-gray-100">
+                            <th :rowspan="productPlan.customers.length" class="px-3 py-2 text-left border-r">
+                              <span>{{ productPlan.product }} -> {{ productPlan.total_quantity }}</span>
+                            </th>
+                            <td class="px-3 py-2">{{ productPlan.customers[0].name }}</td>
+                            <td class="">:</td>
+                            <td class="px-3 py-2">{{ productPlan.customers[0].order_quantity }}</td>
+                          </tr>
+                          <template v-for="(customer, idx) in productPlan.customers" :key="idx">
+                              <tr v-if="idx > 0 && index % 2 !== 0" class="border-b bg-gray-50">
+                                <td class="px-3 py-2">{{ customer.name }}</td>
+                                <td class="">:</td>
+                                <td class="px-3 py-2">{{ customer.order_quantity }}</td>
+                              </tr>
+                              <tr v-if="idx > 0 && index % 2 === 0" class="border-b">
+                                <td class="px-3 py-2">{{ customer.name }}</td>
+                                <td class="">:</td>
+                                <td class="px-3 py-2">{{ customer.order_quantity }}</td>
+                              </tr>
+                          </template>
+                        </template> -->
+                        <template v-for="(productPlan, index) in plan.product_summary" :key="index">
+
+                          <tr :class="['border-b-4 border-slate-100', index % 2 === 0 ? 'bg-sky-200' : '']">
+                            <th :rowspan="productPlan.customers.length"
+                                class="px-3 py-2 text-left border-r-4 border-slate-100">
+                              {{ productPlan.product }} -> {{ productPlan.total_quantity }}
+                            </th>
+                            <td class="pl-3 pr-1 py-2">{{ productPlan.customers[0].name }}</td>
+                            <td>:</td>
+                            <td class="pl-1 pr-3 py-2">{{ productPlan.customers[0].order_quantity }}</td>
+                          </tr>
+
+                          <tr v-for="(customer, idx) in productPlan.customers.slice(1)"
+                              :key="idx"
+                              :class="['border-b-4 border-slate-100', index % 2 === 0 ? 'bg-sky-200' : '']">
+                            <td class="pl-3 pr-1 py-2">{{ customer.name }}</td>
+                            <td>:</td>
+                            <td class="pl-1 pr-3 py-2">{{ customer.order_quantity }}</td>
+                          </tr>
+
+                        </template>
+                      </tbody>
+                    </table>
+                    <!-- <div v-for="productPlan in plan.product_summary" :key="productPlan.product">
+                      <div class="flex gap-1 border-b items-center">
+                        <div class="border-r p-2 text-center">
+                          <strong>{{ productPlan.product }}</strong>
+                          <div><strong>Total:</strong> {{ productPlan.total_quantity }}</div>
+                        </div>
+                        <div class="grid grid-cols-3 gap-1">
+                          <template v-for="customer in productPlan.customers" :key="customer.name">
+                            <div>{{ customer.name }}</div>
+                            <div>:</div>
+                            <div>{{ customer.order_quantity }}</div>
+                          </template>
+                        </div>
+                      </div>
+                    </div> -->
                 </div>
             </div>
         </div>

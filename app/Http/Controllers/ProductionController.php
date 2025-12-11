@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ProductionTask;
 use App\Models\ProductVariant;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class ProductionController extends Controller
@@ -14,52 +15,79 @@ class ProductionController extends Controller
      */
     public function index()
     {
-        // $start = today();
-        // $end = today()->addDays(6);
+        $rows = DB::table('production_tasks')
+            ->join('product_variants', 'production_tasks.product_variant_id', '=', 'product_variants.id')
+            ->join('users', 'production_tasks.customer_id', '=', 'users.id')
+            ->select(
+                'production_tasks.production_date',
+                'product_variants.alias as product_name',
+                'users.name as customer_name',
+                'production_tasks.quantity'
+            )
+            ->orderBy('production_tasks.production_date')
+            ->orderBy('production_tasks.product')
+            ->get();
 
-        // ambil semua task dalam range 7 hari
-        $tasks = ProductionTask::orderBy('production_date')->orderBy('customer')->orderBy('product')->get();
-        // --------------------------------------------------------
-        // 1. Group by production_date
-        // --------------------------------------------------------
+        $summary = [];
 
-        $daily_tasks_by_date = $tasks->groupBy('production_date');
+        foreach ($rows as $row) {
 
+            $date = $row->production_date;
+            $product = $row->product_name;
+            $customer = $row->customer_name;
+            $qty = $row->quantity;
 
-        // --------------------------------------------------------
-        // 2. Group by CUSTOMER per production_date + total quantity
-        // --------------------------------------------------------
+            if (!isset($summary[$date])) {
+                $summary[$date] = [
+                    "product_summary" => [],
+                    "customer_summary" => [],
+                ];
+            }
 
-        $daily_tasks_customer = $daily_tasks_by_date->map(function ($items) {
+            // PRODUCT SUMMARY
+            if (!isset($summary[$date]["product_summary"][$product])) {
+                $summary[$date]["product_summary"][$product] = [
+                    "product" => $product,
+                    "total_quantity" => 0,
+                    "customers" => [],
+                ];
+            }
 
-            return $items
-                ->groupBy('customer')
-                ->map(function ($customerItems) {
+            $summary[$date]["product_summary"][$product]["total_quantity"] += $qty;
 
-                    return [
-                        'total_quantity' => $customerItems->sum('quantity'),
-                        'orders'         => $customerItems->values(), // reset index
-                    ];
-                });
-        });
+            $summary[$date]["product_summary"][$product]["customers"][] = [
+                "name" => $customer,
+                "order_quantity" => $qty,
+            ];
 
+            // CUSTOMER SUMMARY
+            if (!isset($summary[$date]["customer_summary"][$customer])) {
+                $summary[$date]["customer_summary"][$customer] = [
+                    "customer" => $customer,
+                    "total_quantity" => 0,
+                    "products" => [],
+                ];
+            }
 
-        // --------------------------------------------------------
-        // 3. Group by PRODUCT per production_date + total quantity
-        // --------------------------------------------------------
+            $summary[$date]["customer_summary"][$customer]["total_quantity"] += $qty;
 
-        $daily_tasks_product = $daily_tasks_by_date->map(function ($items) {
+            $summary[$date]["customer_summary"][$customer]["products"][] = [
+                "name" => $product,
+                "quantity" => $qty,
+            ];
+        }
 
-            return $items
-                ->groupBy('product')
-                ->map(function ($productItems) {
+        $production_plans = [];
 
-                    return [
-                        'total_quantity' => $productItems->sum('quantity'),
-                        'orders'         => $productItems->values(),
-                    ];
-                });
-        });
+        foreach ($summary as $date => $data) {
+            $production_plans[] = [
+                "date" => $date,
+                "product_summary" => array_values($data["product_summary"]),
+                "customer_summary" => array_values($data["customer_summary"]),
+            ];
+        }
+
+        // dd($production_plans);
 
         // ambil semua product variants
         $product_variants = ProductVariant::all()->toArray();
@@ -73,10 +101,11 @@ class ProductionController extends Controller
             //         'tasks' => $grouped->get($date, []),
             //     ];
             // }),
-            'tasks' => $tasks,'daily_tasks_by_date'  => $daily_tasks_by_date,
-            'daily_tasks_customer' => $daily_tasks_customer,
-            'daily_tasks_product'  => $daily_tasks_product,
+            'production_plans' => $production_plans,
             'product_variants' => $product_variants,
+            // 'daily_tasks'  => $daily_tasks,
+            // 'customer_summary' => $customer_summary,
+            // 'product_summary'  => $product_summary,
         ]);
     }
 
