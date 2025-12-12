@@ -8,7 +8,7 @@ import { LoaderCircle } from 'lucide-vue-next';
 import { ref } from 'vue';
 
 /**
- * hide DialogNewDate
+ * emit for hiding DialogNewDate
  */
 const emit = defineEmits(['hide-dialog-new-date']);
 function handleHideDialogNewDate() {

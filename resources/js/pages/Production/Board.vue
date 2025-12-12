@@ -26,11 +26,6 @@ function toggleDialogNewDate() {
     showDialogNewDate.value = !showDialogNewDate.value;
 }
 
-/**
- * Flash Messages
- */
-const page = usePage();
-const flashSuccess = page.props.flash?.success;
 </script>
 
 <style scoped>
@@ -53,37 +48,18 @@ const flashSuccess = page.props.flash?.success;
         <!-- contoh penggunaan -->
         <div class="flex flex-col gap-1">
             <div v-for="plan in production_plans" :key="plan.date" class="border rounded bg-white w-full shadow drop-shadow">
-                <div class="border-b text-center py-1">
-                    <h2>{{ plan.date }}</h2>
+                <div class="border-b grid grid-cols-3 p-1 justify-between items-center">
+                    <span></span>
+                    <h2 class="text-center">{{ plan.formatted_date }}</h2>
+                    <div class="text-end">
+                      <button class="bg-orange-200 rounded-xl px-2 py-1 hover:cursor-pointer">add task</button>
+                    </div>
                 </div>
                 <div class="p-2">
                     <table class="border-collapse">
                       <tbody>
-                        <!-- <template v-for="(productPlan, index) in plan.product_summary" :key="index">
-                          <tr class="border-b odd:bg-gray-100">
-                            <th :rowspan="productPlan.customers.length" class="px-3 py-2 text-left border-r">
-                              <span>{{ productPlan.product }} -> {{ productPlan.total_quantity }}</span>
-                            </th>
-                            <td class="px-3 py-2">{{ productPlan.customers[0].name }}</td>
-                            <td class="">:</td>
-                            <td class="px-3 py-2">{{ productPlan.customers[0].order_quantity }}</td>
-                          </tr>
-                          <template v-for="(customer, idx) in productPlan.customers" :key="idx">
-                              <tr v-if="idx > 0 && index % 2 !== 0" class="border-b bg-gray-50">
-                                <td class="px-3 py-2">{{ customer.name }}</td>
-                                <td class="">:</td>
-                                <td class="px-3 py-2">{{ customer.order_quantity }}</td>
-                              </tr>
-                              <tr v-if="idx > 0 && index % 2 === 0" class="border-b">
-                                <td class="px-3 py-2">{{ customer.name }}</td>
-                                <td class="">:</td>
-                                <td class="px-3 py-2">{{ customer.order_quantity }}</td>
-                              </tr>
-                          </template>
-                        </template> -->
                         <template v-for="(productPlan, index) in plan.product_summary" :key="index">
-
-                          <tr :class="['border-b-4 border-slate-100', index % 2 === 0 ? 'bg-sky-200' : '']">
+                          <tr :class="['border-b-4 border-slate-100', index % 2 === 0 ? 'bg-sky-200' : 'bg-rose-200']">
                             <th :rowspan="productPlan.customers.length"
                                 class="px-3 py-2 text-left border-r-4 border-slate-100">
                               {{ productPlan.product }} -> {{ productPlan.total_quantity }}
@@ -95,7 +71,7 @@ const flashSuccess = page.props.flash?.success;
 
                           <tr v-for="(customer, idx) in productPlan.customers.slice(1)"
                               :key="idx"
-                              :class="['border-b-4 border-slate-100', index % 2 === 0 ? 'bg-sky-200' : '']">
+                              :class="['border-b-4 border-slate-100', index % 2 === 0 ? 'bg-sky-200' : 'bg-rose-200']">
                             <td class="pl-3 pr-1 py-2">{{ customer.name }}</td>
                             <td>:</td>
                             <td class="pl-1 pr-3 py-2">{{ customer.order_quantity }}</td>

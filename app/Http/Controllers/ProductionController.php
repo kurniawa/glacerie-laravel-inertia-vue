@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\GeneralHelper;
 use App\Models\ProductionTask;
 use App\Models\ProductVariant;
 use Illuminate\Http\Request;
@@ -33,12 +34,14 @@ class ProductionController extends Controller
         foreach ($rows as $row) {
 
             $date = $row->production_date;
+            $formatted_date = GeneralHelper::formatToIndonesian($row->production_date);
             $product = $row->product_name;
             $customer = $row->customer_name;
             $qty = $row->quantity;
 
             if (!isset($summary[$date])) {
                 $summary[$date] = [
+                    "formatted_date" => $formatted_date,
                     "product_summary" => [],
                     "customer_summary" => [],
                 ];
@@ -82,6 +85,7 @@ class ProductionController extends Controller
         foreach ($summary as $date => $data) {
             $production_plans[] = [
                 "date" => $date,
+                "formatted_date" => $data['formatted_date'],
                 "product_summary" => array_values($data["product_summary"]),
                 "customer_summary" => array_values($data["customer_summary"]),
             ];
