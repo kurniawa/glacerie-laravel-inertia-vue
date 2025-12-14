@@ -6,12 +6,15 @@ import { computed, ref } from 'vue';
 import DialogNewDate from './DialogNewDate.vue';
 import DatePicker from '@/components/DatePicker.vue';
 import { usePage } from '@inertiajs/vue3';
+import DialogNewTask from './DialogNewTask.vue';
 
 const props = defineProps({
-    production_plans: Array
+    production_plans: Array,
+    product_variants: Array,
+    customers: Array,
 });
 
-console.log(props.production_plans); 
+// console.log(props.production_plans); 
 
 const activeTab = ref('active');
 const activeClass = ref('bg-sky-400 text-white font-bold');
@@ -25,6 +28,17 @@ const showDialogNewDate = ref(false);
 function toggleDialogNewDate() {
     showDialogNewDate.value = !showDialogNewDate.value;
 }
+
+/**
+ * Dialog New Task
+ */
+const showDialogNewTask = ref(false);
+
+function toggleDialogNewTask(dateStr) {
+    dateString.value = dateStr;
+    showDialogNewTask.value = !showDialogNewTask.value;
+}
+const dateString=ref('');
 
 </script>
 
@@ -44,6 +58,7 @@ function toggleDialogNewDate() {
             </button>
         </div>
         <DialogNewDate v-if="showDialogNewDate" @hide-dialog-new-date="toggleDialogNewDate"/>
+        <DialogNewTask v-if="showDialogNewTask" :date-string="dateString" :customers="customers" :product-variants="product_variants" @hide-dialog-new-task="toggleDialogNewTask" />
 
         <!-- contoh penggunaan -->
         <div class="flex flex-col gap-1">
@@ -52,7 +67,7 @@ function toggleDialogNewDate() {
                     <span></span>
                     <h2 class="text-center">{{ plan.formatted_date }}</h2>
                     <div class="text-end">
-                      <button class="bg-orange-200 rounded-xl px-2 py-1 hover:cursor-pointer">add task</button>
+                      <button class="bg-orange-200 rounded-xl px-2 py-1 hover:cursor-pointer" @click="toggleDialogNewTask(plan.date)">add task</button>
                     </div>
                 </div>
                 <div class="p-2">

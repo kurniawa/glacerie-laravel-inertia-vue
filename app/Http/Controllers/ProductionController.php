@@ -95,6 +95,7 @@ class ProductionController extends Controller
 
         // ambil semua product variants
         $product_variants = ProductVariant::all()->toArray();
+        $customers = DB::table('users')->select('id', 'name')->get()->toArray();
 
         return Inertia::render('Production/Board', [
             // 'start_date' => $start->format('Y-m-d'),
@@ -107,6 +108,7 @@ class ProductionController extends Controller
             // }),
             'production_plans' => $production_plans,
             'product_variants' => $product_variants,
+            'customers' => $customers,
             // 'daily_tasks'  => $daily_tasks,
             // 'customer_summary' => $customer_summary,
             // 'product_summary'  => $product_summary,
