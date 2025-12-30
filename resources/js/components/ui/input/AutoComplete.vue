@@ -1,14 +1,13 @@
 <script setup>
 import { ref, computed } from 'vue';
 import Input from './Input.vue';
+import { clear } from 'node:console';
 
 const emits = defineEmits([
     'update:modelValue',   // tampil di input (name)
     'update:selected',     // slug / id (hidden value)
-    'search',
     'focus',
     'blur',
-    'change',
 ]);
 
 const props = defineProps({
@@ -20,15 +19,22 @@ const props = defineProps({
         type: [String, Object, Number],
         default: null,
     },
-    suggestions: {
-        type: Array,
-        default: () => [],   // [{ name, slug }]
-    },
     delay: {
         type: Number,
         default: 200,
     },
+    data: {
+        type: Object,
+        default: () => ({
+            table: '',
+            column: '',
+            parent: null,
+            parentValue: null,
+        }),
+    },
 });
+
+const suggestions = ref([]);
 
 const open = ref(false);
 const highlighted = ref(-1);
@@ -38,18 +44,18 @@ const showSuggestions = computed(() =>
     open.value && props.suggestions.length > 0
 );
 
-async function fetchSuggestions(table, column, parent, parentValue, text) {
+async function fetchSuggestions(text) {
     if (!text) {
         suggestions.value = [];
         return;
     }
     let res;
-    if (parent) {
-        res = await axios.get(`/api/autocomplete?table=${table}&column=${column}&text=${text}&parent=${parent}&parent_slug=${parentValue}`, {
+    if (data.parent) {
+        res = await axios.get(`/api/autocomplete?table=${data.table}&column=${data.column}&text=${text}&parent=${data.parent}&parent_slug=${data.parentValue}`, {
             params: { q: text }
         });
     } else {
-        res = await axios.get(`/api/autocomplete?table=${table}&column=${column}&text=${text}`, {
+        res = await axios.get(`/api/autocomplete?table=${data.table}&column=${data.column}&text=${text}`, {
             params: { q: text }
         });
     }
@@ -67,15 +73,19 @@ function handleInput(e) {
 
     clearTimeout(timer);
     timer = setTimeout(() => {
-        emits('search', value);
+        fetchSuggestions(value);
     }, props.delay);
+}
+
+function clearSuggestions() {
+    suggestions.value = [];
 }
 
 function select(item) {
     emits('update:modelValue', item.name);
     emits('update:selected', item.slug);
 
-    emits('change', item);
+    clearSuggestions();
     open.value = false;
     highlighted.value = -1;
 }

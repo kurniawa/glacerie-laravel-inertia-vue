@@ -60,6 +60,16 @@ function handleAddTask() {
         processing.value = false;
     }, 1000);
 }
+
+/**
+ * AutoComplete customers
+ */
+const data = {
+    table: 'customers',
+    column: 'name',
+    parent: null,
+    parentValue: null,
+};
 </script>
 
 <template>
@@ -74,8 +84,7 @@ function handleAddTask() {
                 v-model="form.customer_name"
                 v-model:selected="selectedSuggestions[0].slug"
                 @change="clearSuggestions"
-                :suggestions="suggestions"
-                @search="fetchSuggestions('ornament_types', 'localname', 'category', 'jewelry', $event)"
+                :data="data"
                 placeholder="Customer Name"
             />
             <Button type="button" class="bg-orange-400" @click="handleAddTask">
